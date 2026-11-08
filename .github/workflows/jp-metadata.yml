@@ -1,0 +1,23 @@
+name: Japanese port metadata tests
+on:
+  push:
+    branches: [jp-port]
+    paths:
+      - 'tools/jp/**'
+      - 'recomp/dw5xl_jp/**'
+      - '.github/workflows/jp-metadata.yml'
+  pull_request:
+    paths:
+      - 'tools/jp/**'
+      - 'recomp/dw5xl_jp/**'
+      - '.github/workflows/jp-metadata.yml'
+jobs:
+  metadata-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Test Japanese sample inspectors (synthetic inputs only)
+        run: python -m unittest discover -s tools/jp -p 'test_*.py' -v

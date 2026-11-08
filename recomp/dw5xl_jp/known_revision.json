@@ -1,0 +1,95 @@
+{
+  "schema_version": 1,
+  "scope": "five sample files; full disc unverified",
+  "boot_executable": "SLPM_661.01",
+  "system_cnf": {
+    "file": "SYSTEM.CNF",
+    "size": 80,
+    "sha256": "6e78c0e02d3c2f71017d16771497dfb206a91fc9a1c57a5f4370b3f9c676172c",
+    "version": "1.01",
+    "video_mode": "NTSC"
+  },
+  "elf": {
+    "file": "SLPM_661.01",
+    "size": 2482728,
+    "sha256": "eb2a9ee5b456925825702561ba615569879117d370784ca954cf801b377b9cb8",
+    "elf_entry": "0x00100008",
+    "elf_flags": "0x20924000",
+    "load_segments": [
+      {
+        "vaddr": "0x00100000",
+        "file_size": 2478336,
+        "mem_size": 5294080,
+        "flags": 7,
+        "alignment": 2048
+      },
+      {
+        "vaddr": "0x0060C800",
+        "file_size": 0,
+        "mem_size": 575488,
+        "flags": 7,
+        "alignment": 2048
+      },
+      {
+        "vaddr": "0x0060C800",
+        "file_size": 0,
+        "mem_size": 591872,
+        "flags": 7,
+        "alignment": 2048
+      },
+      {
+        "vaddr": "0x0060C800",
+        "file_size": 0,
+        "mem_size": 165888,
+        "flags": 7,
+        "alignment": 2048
+      },
+      {
+        "vaddr": "0x0069D000",
+        "file_size": 0,
+        "mem_size": 0,
+        "flags": 6,
+        "alignment": 16
+      }
+    ]
+  },
+  "overlays": [
+    {
+      "file": "OVL_00.BIN",
+      "size": 522240,
+      "sha256": "b14612f09d69ce47f42010c20a1d71e33a3d1859228589b6d7ca7c4ee2d48a49",
+      "module_id": 1,
+      "load_base": "0x0060C800",
+      "header_field_0c": 463104,
+      "header_field_10": 59072,
+      "bss_size": 51328,
+      "constructor_start": "0x0068BF50",
+      "constructor_end": "0x0068BF88"
+    },
+    {
+      "file": "OVL_01.BIN",
+      "size": 502656,
+      "sha256": "1f599a58faaf55ac7fcaaa89980a9a2329c3290b577779e80e38ae2379eb0a97",
+      "module_id": 2,
+      "load_base": "0x0060C800",
+      "header_field_0c": 487104,
+      "header_field_10": 15488,
+      "bss_size": 87680,
+      "constructor_start": "0x00687380",
+      "constructor_end": "0x00687380"
+    },
+    {
+      "file": "OVL_02.BIN",
+      "size": 165888,
+      "sha256": "7b68306f3169e9a4125c9f060bc56766a3c1a0fb959f0bcd8cb069f35923af35",
+      "module_id": 3,
+      "load_base": "0x0060C800",
+      "header_field_0c": 159680,
+      "header_field_10": 4736,
+      "bss_size": 0,
+      "constructor_start": "0x00634A80",
+      "constructor_end": "0x00634A80"
+    }
+  ],
+  "notice": "Hashes and header metadata only. No game code or game assets are included. No claim of playability."
+}

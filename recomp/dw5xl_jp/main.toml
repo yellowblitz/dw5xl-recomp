@@ -1,0 +1,15 @@
+# Japanese PS2 executable: SLPM_661.01
+# DEVELOPMENT SCAFFOLD ONLY - not ready to compile or play.
+# Re-run Ghidra analysis for the actual Japanese ELF; never copy PAL addresses.
+[general]
+input = "game/dw5xl_jp/SLPM_661.01"
+ghidra_output = "recomp/dw5xl_jp/ghidra_functions.code.csv"
+output = "recomp/dw5xl_jp/output/"
+single_file_output = false
+output_file_batch_size = 64
+patch_syscalls = false
+patch_cop0 = true
+patch_cache = true
+# TODO: Populate Japanese function map and verify handlers/addresses individually.
+stubs = []
+entry_points = []

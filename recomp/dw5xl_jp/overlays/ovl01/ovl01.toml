@@ -1,0 +1,19 @@
+# Japanese OVL_01.BIN — metadata from supplied SLPM_661.01 game files.
+# DEVELOPMENT SCAFFOLD ONLY. Main code and overlay Ghidra maps are NOT available.
+# raw_code_offset=0x80 is inherited as a provisional hypothesis from PAL; verify in Ghidra.
+# File SHA-256: 1f599a58faaf55ac7fcaaa89980a9a2329c3290b577779e80e38ae2379eb0a97
+[general]
+input = "game/dw5xl_jp/OVL_01.BIN"
+input_format = "raw"
+module_id = "dw5xl_jp_ovl01"
+raw_base = 0x0060C800
+raw_code_offset = 0x80
+ghidra_output = "recomp/dw5xl_jp/overlays/ovl01/ghidra_functions.code.csv"
+output = "recomp/dw5xl_jp/overlays/ovl01/output/"
+single_file_output = false
+output_file_batch_size = 64
+patch_syscalls = false
+patch_cop0 = true
+patch_cache = true
+stubs = []
+entry_points = []

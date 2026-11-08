@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Japanese Dynasty Warriors 5 Xtreme Legends native PC recompilation research project, based on dw5xl-recomp.">
+  <meta name="theme-color" content="#101115">
+  <title>DW5XL Recomp · Japanese Port</title>
+  <style>
+    :root{color-scheme:dark;--bg:#101115;--panel:#191b20;--line:#33343b;--text:#f5f1e8;--muted:#b0ada6;--gold:#e7bd74;--red:#ba5750}
+    *{box-sizing:border-box}body{margin:0;color:var(--text);background:radial-gradient(ellipse at 80% 0%,#4d302b 0,transparent 38%),var(--bg);font-family:system-ui,-apple-system,Segoe UI,sans-serif;line-height:1.6}
+    a{color:var(--gold)}a:hover{color:#ffe2aa}.wrap{max-width:1080px;margin:0 auto;padding:0 24px}.nav{display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--line);padding:24px 0;gap:20px;flex-wrap:wrap}.wordmark{font-weight:800;letter-spacing:.09em;text-transform:uppercase}.nav a{font-size:14px;text-decoration:none}
+    .hero{padding:110px 0 90px}.eyebrow{font-size:13px;letter-spacing:.23em;text-transform:uppercase;color:var(--gold);font-weight:700}.jp{font-weight:800;letter-spacing:.08em;color:var(--gold);font-size:clamp(23px,4vw,45px);margin:20px 0 0}.hero h1{font-size:clamp(44px,8vw,88px);line-height:1.04;letter-spacing:-.05em;margin:15px 0 24px;max-width:900px}.hero p{font-size:clamp(17px,2.2vw,21px);color:var(--muted);max-width:710px}
+    .status{display:inline-flex;gap:10px;align-items:center;border:1px solid #735044;border-radius:100px;background:#33231f;padding:8px 14px;color:#f1c4ae;font-weight:600;font-size:13px;margin-top:20px}.dot{background:var(--red);border-radius:50%;width:8px;height:8px}
+    .buttons{display:flex;gap:12px;flex-wrap:wrap;margin-top:35px}.btn{padding:12px 19px;border:1px solid #8e764f;border-radius:8px;color:var(--text);text-decoration:none;font-weight:650}.btn.primary{background:var(--gold);color:#21180e;border-color:var(--gold)}.btn:hover{filter:brightness(1.12);color:inherit}.btn.primary:hover{color:#21180e}
+    .section{padding:25px 0 80px}.section h2{font-size:clamp(26px,4vw,38px);letter-spacing:-.03em}.cards{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}.card{border:1px solid var(--line);background:var(--panel);border-radius:12px;padding:25px}.number{font-size:12px;color:var(--gold);letter-spacing:.16em;font-weight:750}.card h3{margin:13px 0 6px;font-size:19px}.card p{font-size:15px;color:var(--muted);margin:0}.note{border-left:3px solid var(--gold);padding:16px 22px;background:#242026;color:var(--muted);margin:20px 0 50px}footer{border-top:1px solid var(--line);color:var(--muted);font-size:13px;padding:29px 0 45px}footer p{max-width:850px}
+    @media(max-width:730px){.hero{padding:64px 0}.cards{grid-template-columns:1fr}.nav{padding:17px 0}}
+  </style>
+</head>
+<body>
+  <div class="wrap"><nav class="nav" aria-label="Primary navigation"><div class="wordmark">DW5XL / RECOMP JP</div><a href="https://github.com/TheSlackbringer/dw5xl-recomp">Original PAL project</a></nav>
+    <main>
+      <section class="hero">
+        <div class="eyebrow">A native PC recompilation project · Japanese edition</div>
+        <p class="jp" lang="ja">真・三國無双4 猛将伝</p>
+        <h1>The Japanese version.<br>Rebuilt for PC.</h1>
+        <p>Research and development toward a Japanese-language native PC port, using TheSlackbringer's open-source Dynasty Warriors 5: Xtreme Legends recompilation as the foundation.</p>
+        <div class="status"><span class="dot"></span> EARLY DEVELOPMENT · NOT PLAYABLE</div>
+        <div class="buttons"><a class="btn primary" href="https://github.com/yellowblitz/dw5xl-recomp/tree/jp-port">View Japanese port source</a><a class="btn" href="https://github.com/TheSlackbringer/dw5xl-recomp">Original PAL source</a></div>
+      </section>
+      <section class="section"><h2>Development roadmap</h2><div class="cards">
+        <article class="card"><div class="number">01 / VERIFY</div><h3>Japanese disc analysis</h3><p>Verified SLPM_661.01 ELF and three overlay headers. Full-disc module verification remains.</p></article>
+        <article class="card"><div class="number">02 / RECOMPILE</div><h3>Region-specific machine code</h3><p>Build new Ghidra function maps, PS2Recomp profiles and VU translators for the Japanese executable.</p></article>
+        <article class="card"><div class="number">03 / PLAYTEST</div><h3>Native Windows and Linux</h3><p>Adapt the runtime and installer, then validate Japanese menus, combat, audio, save games and graphics.</p></article>
+      </div></section>
+      <div class="note"><strong>Current reality:</strong> The Japanese executable and three overlay headers have been fingerprinted. This remains a development scaffold, not a playable Japanese port. The upstream playable beta supports the PAL version only. An original legally obtained Japanese disc will be required for development and for any user-side code compilation.</div>
+    </main><footer><p>Community development project derived from <a href="https://github.com/TheSlackbringer/dw5xl-recomp">dw5xl-recomp</a> by TheSlackbringer and contributors. The derived source must retain GPL-3.0 and applicable third-party notices. Dynasty Warriors and Shin Sangoku Musou are trademarks of their respective owners. Not affiliated with or endorsed by Koei Tecmo.</p></footer>
+  </div>
+</body>
+</html>

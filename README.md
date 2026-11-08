@@ -1,118 +1,44 @@
-<h1 align="center">DW5XL Recomp</h1>
+# DW5XL Recomp JP — 真・三國無双4 猛将伝
 
-<p align="center"><b>Dynasty Warriors 5: Xtreme Legends (PS2) as a native PC game, built on your PC from your own disc.</b></p>
+**Status: verified binary fingerprints and development scaffolding only; NOT a playable Japanese port.**
 
-<p align="center">
-  <a href="https://github.com/TheSlackbringer/dw5xl-recomp/actions/workflows/build.yml"><img alt="build" src="https://img.shields.io/github/actions/workflow/status/TheSlackbringer/dw5xl-recomp/build.yml?branch=main&label=build&logo=github"></a>
-  <img alt="platform: Windows | Linux" src="https://img.shields.io/badge/platform-Windows%20%7C%20Linux-0a7bbb">
-  <img alt="graphics: Vulkan" src="https://img.shields.io/badge/graphics-Vulkan-ac162c">
-  <a href="LICENSE"><img alt="license: GPL-3.0" src="https://img.shields.io/badge/license-GPL--3.0-6a9a1f"></a>
-  <img alt="status: playable (beta)" src="https://img.shields.io/badge/status-playable%20(beta)-e6a200">
-  <img alt="disc: PAL SLES-53860" src="https://img.shields.io/badge/disc-PAL%20SLES--53860-555">
-</p>
+This development branch adapts [TheSlackbringer/dw5xl-recomp](https://github.com/TheSlackbringer/dw5xl-recomp), a GPL-3.0 native PS2 recompilation project, for **Shin Sangoku Musou 4 Moushouden** (真・三國無双4 猛将伝). The existing PAL port is preserved on the original `main` branch.
 
-A native PC port of **Dynasty Warriors 5: Xtreme Legends** for the PlayStation 2, built with PS2Recomp: the game's code is translated into C++ and runs natively, with graphics on **Vulkan through paraLLEl-GS**. Windows and Linux releases build the game on your PC from your own disc.
+## Verified Japanese samples (2026-11-08)
 
-> [!IMPORTANT]
-> You need your own legal copy of **Dynasty Warriors 5: Xtreme Legends** (English PAL, `SLES_538.60`). Nothing from the game is in this repository or in its releases: no disc images, game executables, IRX modules, game assets or translated game code.
+The project maintainer supplied the boot executable `SLPM_661.01`, `SYSTEM.CNF` and `OVL_00.BIN` through `OVL_02.BIN`. Their SHA-256 fingerprints, sizes, ELF segment layout, and overlay headers are recorded at [`recomp/dw5xl_jp/known_revision.json`](recomp/dw5xl_jp/known_revision.json). This is **not** a complete-disc manifest, and no game bytes have been committed.
 
-## Status
+- `SYSTEM.CNF` confirms `SLPM_661.01` and `VMODE = NTSC`.
+- The executable is a 32-bit little-endian MIPS ELF; its entry point is `0x00100008`.
+- Three verified overlay headers have IDs 1, 2 and 3, all reporting a load base of `0x0060C800` (the PAL branch uses `0x0061A800`).
+- The Japanese ELF and overlay source metadata are structurally readable, but **function boundaries, VU programs, runtime hooks and compilation have not been validated**.
 
-**Beta: all modes work** — boot, menus, Legend/Musou/Free modes, the opening and event movies, music, voices and sound effects, saving and loading, and Load Original. We are still testing for bugs and performance, so expect rough edges: report them in [Issues](https://github.com/TheSlackbringer/dw5xl-recomp/issues).
+## Development files
 
-**Known issues:** in busy battles the frame rate on Windows is lower than on Linux and the picture can jump; higher resolutions cost more on Windows.
+- [`tools/jp/inspect_samples.py`](tools/jp/inspect_samples.py): inspect individual JP ELF/overlay samples, no ISO required.
+- [`tools/jp/inspect_disc.py`](tools/jp/inspect_disc.py): inspect an extracted *complete* Japanese PS2 disc to produce a hash-only inventory.
+- [`tools/jp/scaffold_profile.py`](tools/jp/scaffold_profile.py): safely create a main PS2Recomp template from the inventory.
+- [`recomp/dw5xl_jp/main.toml`](recomp/dw5xl_jp/main.toml): main JP ELF candidate configuration, awaiting a JP Ghidra map.
+- [`recomp/dw5xl_jp/overlays/`](recomp/dw5xl_jp/overlays): three candidate JP overlay configurations. The `raw_code_offset = 0x80` is **not yet verified for JP**.
+- [`docs/JP_PORT_PLAN.md`](docs/JP_PORT_PLAN.md): remaining reverse engineering and native integration milestones.
+- [`docs/index.html`](docs/index.html): static GitHub Pages landing page (requires one-time Pages setting in GitHub).
 
-## What you need
+## Reproduce the metadata locally
 
-- **Dynasty Warriors 5: Xtreme Legends**, English PAL (`SLES_538.60`), as an `.iso`. Required.
-- Optional: **Dynasty Warriors 5**, English PAL (`SLES_533.39`), to unlock the original game's Musou and Free modes through **Load Original** in the game.
-- A 64-bit CPU with AVX2 (Intel since 2013, AMD Ryzen) and a graphics card with a current Vulkan driver; about 10 GB of free space.
-- Windows 10 (1903 or newer) / 11, or Linux with glibc 2.31 or newer.
+From your own Japanese game files (nothing is uploaded by this command):
 
-Other regions and revisions are not supported (every file is checked against known checksums).
+```powershell
+python tools/jp/inspect_samples.py --system "C:\Games\DW5XL-JP\SYSTEM.CNF" --elf "C:\Games\DW5XL-JP\SLPM_661.01" --overlay "C:\Games\DW5XL-JP\OVL_00.BIN" --overlay "C:\Games\DW5XL-JP\OVL_01.BIN" --overlay "C:\Games\DW5XL-JP\OVL_02.BIN" --json jp-samples.json
+python -m unittest discover -s tools/jp -p "test_*.py" -v
+```
 
-## Playing
+If you have the extracted **entire ISO**, use `python tools/jp/inspect_disc.py "C:\Games\DW5XL-JP" --json jp-inventory.json` to inspect the `MODULES` folder as well. Hashes alone do not establish cross-version function compatibility.
 
-Download the latest release from the [Releases](https://github.com/TheSlackbringer/dw5xl-recomp/releases) page. It contains our program, the source code, a compiler and the tools; nothing else needs to be installed and nothing is downloaded while it builds.
+## Safety, authorship and licensing
 
-- **Windows:** unzip `DW5XL-<version>-windows-x64.zip` close to the drive root, e.g. `C:\Games\` (deep paths trip up Windows), and start **`DW5XL.exe`**. It is not signed: if Windows says *"Windows protected your PC"*, choose **More info → Run anyway**.
-- **Linux:** make `DW5XL-RECOMP-<version>-x86_64.AppImage` executable and open it. AppImage update tools such as AppImageUpdate can update it to the newest release.
+Preserve upstream GPL-3.0 `LICENSE`, `THIRD_PARTY.md`, and vendored dependency notices. **Never publish any game executable, disc image, sound/movie asset, IRX module, original machine-code blob, or game-derived generated C++**. Developer tools and non-copyrightable format metadata are published; each user supplies their own legal game copy to generate game code locally. Not affiliated with or endorsed by Koei Tecmo.
 
-**First start:** choose your XL disc image (and optionally the DW5 one) and press **Start**. The disc is checked, and the game is translated and compiled for your PC — about 10 minutes, once. Every later start opens the game directly; a new release rebuilds once without asking for the disc again.
 
-**Load Original:** when the game asks for the Dynasty Warriors 5 disc, a window opens over the game: choose that disc image and press **Install**. You can also add or repair discs any time with **F10**. Once your DW5 disc is installed, the game starts with Musou and Free Mode already unlocked.
+---
 
-Saves, settings and logs are kept in `%LOCALAPPDATA%\DW5XL` (Windows) or `~/.local/share/dw5xl` (Linux), so updating the release keeps them. If something goes wrong, please attach the files from its `logs` folder to an issue.
-
-## Controls
-
-| Keyboard | PS2 input |
-| --- | --- |
-| Arrow keys or WASD | D-pad |
-| X or Space / C | Cross / Circle |
-| Z / V | Square / Triangle |
-| Q / E | L1 / R1 |
-| Left Shift / Right Shift | L2 / R2 |
-| Enter / Tab | Start / Select |
-| Esc | PC SETTINGS |
-
-Gamepads work too. Holding the gamepad's **Back** (Select) button for ¾ of a second opens PC SETTINGS; a short press is still Select in the game.
-
-### PC SETTINGS
-
-**PC SETTINGS** is in the game's Options menu (where the PS2's SCREEN ADJUST was), in the game's own style. It is also in the in-play menu (below).
-
-### In-play menu
-
-**Esc** or holding **Back** opens the in-play menu at any time: **RESUME**, **SAVE STATE**, **LOAD STATE** and **PC SETTINGS**. The game pauses until you close it with Esc, Triangle or Back (from a list, Back returns to the menu).
-
-- **SAVE STATE** saves the game exactly as it is, while it stays paused, to **QUICK** (the F5 slot) or **SLOT 1–5**. Each slot shows when it was made and a picture of that moment; replacing a used slot asks for a second Cross.
-- **LOAD STATE** goes back to a saved moment and closes the menu. **UNDO LAST LOAD** goes back to where you were before the last load (like Shift+F9).
-- A state made before your last in-game save is marked with **!**: loading it brings back the older save the game had then (see below).
-
-| Setting | Values |
-| --- | --- |
-| **GRAPHICS** | |
-| RENDER SCALE | 1×, 2×, 4×: how much detail the game draws |
-| ANTI-ALIASING | Off, 2×, 4×, 8×, 16× |
-| SHARPEN | On / Off (above 1×): crisper edges, with some grain |
-| FIELD OF VIEW | 80–130 %. How far you see in battle. |
-| DEFAULT | Restores this page's settings |
-| **DISPLAY** | |
-| DISPLAY | Window / Fullscreen |
-| ASPECT RATIO | 4:3, 16:9, 21:9. The shape of the whole game; in battle, wide shapes show more. |
-| VSYNC | On / Off |
-| SHOW FPS | On / Off |
-| DEFAULT | Restores this page's settings |
-
-Cross opens a page, Back returns from it. Up/Down picks a setting, Left/Right changes it, and Cross on DEFAULT resets that page. Changes apply right away and are remembered.
-
-### Function keys
-
-| Key | Description |
-| --- | --- |
-| **F1** | Runtime debugger (developer builds only). |
-| **F2** | Show or hide the frame rate (same as SHOW FPS). |
-| **F3** | Cycle anti-aliasing (1× → 2× → 4× → 8× → 16×). |
-| **F4** | Cycle the resolution (1× → 2× → 4×). |
-| **F5** | Save state: saves the game as it is right now to the quick slot. Not possible while a movie plays or the memory card is in use. |
-| **F8** | Show the build ID and game tick (for bug reports). |
-| **F9** | Load state: goes back to the moment of the last F5. |
-| **Shift+F9** | Undo the last load: goes back to where you were before pressing F9. |
-| **F10** | Discs window: see the installed discs, add or repair the DW5 disc, check the files. |
-
-Save states (the quick slot, SLOT 1–5, and the state before the last load, each with its picture) are kept in the `states` folder next to the game files and keep working after updates; a state is only refused when an update changed what a state holds.
-
-Save states and memory-card saves are separate: a state does not change your memory card. When you load a state made before your last in-game save, the game shows the save it had at that moment; the newer save is still on the card and the game reads it the next time it starts. Saving in the game after such a load replaces the newer save.
-
-## Building from source
-
-See [BUILDING.md](BUILDING.md) for building on Linux from source, the developer tools and making a release.
-
-## License and attribution
-
-The port's own source and tools are licensed under GPL-3.0; see [LICENSE](LICENSE). This license grants no rights to the original games or their assets.
-
-The vendored [PS2Recomp](https://github.com/ran-j/PS2Recomp) runtime and recompiler are modified versions of the upstream project by ran-j and contributors. Revision and maintenance details are in [DW5XL_VENDORED.md](external/PS2Recomp/DW5XL_VENDORED.md). Third-party code retains its applicable licenses; see [THIRD_PARTY.md](THIRD_PARTY.md) and the accompanying notices.
-
-Dynasty Warriors is a trademark of KOEI TECMO. This project is not affiliated with or endorsed by KOEI TECMO.
+For the original playable **PAL** release, see the unchanged [PAL main branch](https://github.com/yellowblitz/dw5xl-recomp/tree/main) or [TheSlackbringer's upstream repository](https://github.com/TheSlackbringer/dw5xl-recomp).

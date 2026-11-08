@@ -13,11 +13,15 @@ on:
       - '.github/workflows/jp-metadata.yml'
 jobs:
   metadata-tests:
-    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest]
+        python: ['3.11', '3.12']
+    runs-on: ${{ matrix.os }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-python@v5
         with:
-          python-version: '3.12'
+          python-version: ${{ matrix.python }}
       - name: Test Japanese sample inspectors (synthetic inputs only)
         run: python -m unittest discover -s tools/jp -p 'test_*.py' -v

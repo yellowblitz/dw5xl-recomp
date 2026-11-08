@@ -48,3 +48,11 @@ The initial `main.toml` and three overlay TOMLs are placeholders with no functio
 - Each issue/commit claims only verified progress; avoid indicating the JP game is playable until it actually boots and passes tests.
 - Keep GPL-3.0 copyright notices, license and third-party acknowledgements intact.
 - No disc data, ISO extracts, game content or generated machine-code translations in Git.
+
+## Development checkpoint — 2026-11-08
+
+Added an exact five-file verification command and explicit build blockers in
+`tools/jp/preflight.py`, with synthetic regression tests. The provided samples
+reproduce the committed metadata exactly. See [JP_ANALYSIS.md](JP_ANALYSIS.md)
+for the Ghidra handoff and remaining gates. Native compilation and boot remain
+unverified; no Japanese function maps have been created.

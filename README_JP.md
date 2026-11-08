@@ -23,6 +23,24 @@ The project maintainer supplied the boot executable `SLPM_661.01`, `SYSTEM.CNF` 
 - [`docs/JP_PORT_PLAN.md`](docs/JP_PORT_PLAN.md): remaining reverse engineering and native integration milestones.
 - [`docs/index.html`](docs/index.html): static GitHub Pages landing page (requires one-time Pages setting in GitHub).
 
+## Check your inputs before development
+
+Python 3.11 or newer; no extra Python packages are required:
+
+```powershell
+python tools/jp/preflight.py "C:\Games\DW5XL-JP" --inputs-only
+python tools/jp/preflight.py "C:\Games\DW5XL-JP" --json
+```
+
+The first command succeeds only when every sample's size and SHA-256 matches
+`known_revision.json`. It accepts upper/lowercase filenames and rejects missing,
+changed, ambiguous or symlinked inputs. The second command reports remaining
+porting work and currently exits **1** because the native JP build is blocked.
+Neither command runs recompilation or validates a complete disc. `--revision`
+selects a different fingerprint baseline; success then applies only to that baseline.
+
+See [the JP analysis handoff](docs/JP_ANALYSIS.md) for the next development step.
+
 ## Reproduce the metadata locally
 
 From your own Japanese game files (nothing is uploaded by this command):

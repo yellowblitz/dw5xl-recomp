@@ -49,6 +49,18 @@ The initial `main.toml` and three overlay TOMLs are placeholders with no functio
 - Keep GPL-3.0 copyright notices, license and third-party acknowledgements intact.
 - No disc data, ISO extracts, game content or generated machine-code translations in Git.
 
+## Overlay checkpoint tooling — 2026-11-09
+
+Added [checkpoint_overlay_maps.py](../tools/jp/checkpoint_overlay_maps.py) and
+12 synthetic regression tests to check each of the three known JP overlay
+headers, SHA-256 identities, module IDs, guest load bases and candidate
+function-map ranges. GitHub Actions passed on the Linux/Windows Python
+3.11/3.12 matrix. This is structural preparation only; no Japanese overlay
+function map is committed and the candidate `raw_code_offset = 0x80` is
+**not verified**. Follow the
+[overlay analysis handoff](JP_OVERLAY_CHECKPOINT.md) before generating
+Japanese native code.
+
 ## Development checkpoint — 2026-11-08
 
 Added an exact five-file verification command and explicit build blockers in

@@ -1,6 +1,6 @@
 # Japanese analysis handoff
 
-**Current handoff:** [main-ELF checkpoint and reproduction instructions](JP_MAIN_CHECKPOINT.md). Earlier main-ELF analysis observations were local and are not checked-in map/validator artifacts; treat them as unverified until reproduced.
+**Current handoffs:** [main-ELF checkpoint](JP_MAIN_CHECKPOINT.md) and [three-overlay checkpoint](JP_OVERLAY_CHECKPOINT.md). Earlier main-ELF analysis observations were local and are not checked-in map/validator artifacts; treat them as unverified until reproduced.
 
 
 ## Verified checkpoint — 2026-11-08
@@ -11,7 +11,7 @@ checks those fingerprints and reports remaining development prerequisites.
 The initial 15 synthetic JP tests passed locally with Python 3.12. Eight more
 checkpoint-tool tests were added on the jp-port branch, and the GitHub Actions
 Python 3.11/3.12 Linux/Windows matrix passed for commit 0740bf0 (2026-11-09).
-This is tool/metadata testing only, not native recompilation validation.
+The 12 new overlay checkpoint tests also passed in GitHub Actions on Linux/Windows, Python 3.11/3.12 (commit 3d1382a, 2026-11-09). These are tool/metadata tests only, not actual recompilation or code-boundary validation.
 
 The broader upstream tooling suite ran 122 tests: 34 failures, 12 errors and
 1 skip. Missing CMake and the built recompiler prevent those checks from passing

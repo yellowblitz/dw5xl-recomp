@@ -20,12 +20,17 @@ The project maintainer supplied the boot executable `SLPM_661.01`, `SYSTEM.CNF` 
 - [`tools/jp/scaffold_profile.py`](tools/jp/scaffold_profile.py): safely create a main PS2Recomp template from the inventory.
 - [`recomp/dw5xl_jp/main.toml`](recomp/dw5xl_jp/main.toml): main JP ELF candidate configuration, awaiting a JP Ghidra map.
 - [`recomp/dw5xl_jp/overlays/`](recomp/dw5xl_jp/overlays): three candidate JP overlay configurations. The `raw_code_offset = 0x80` is **not yet verified for JP**.
+- [`tools/jp/checkpoint_overlay_maps.py`](tools/jp/checkpoint_overlay_maps.py): check the three JP overlay samples and hash-lock independently reviewed function CSVs for validation. See [overlay handoff](docs/JP_OVERLAY_CHECKPOINT.md).
 - [`docs/JP_PORT_PLAN.md`](docs/JP_PORT_PLAN.md): remaining reverse engineering and native integration milestones.
 - [`docs/index.html`](docs/index.html): static GitHub Pages landing page (requires one-time Pages setting in GitHub).
 
 ## Preserve main-ELF analysis checkpoints
 
 Use [`tools/jp/checkpoint_main_map.py`](tools/jp/checkpoint_main_map.py) to hash-lock a reviewed Japanese function CSV and compare it with its raw Ghidra export. The tool generates a local manifest for the existing validator; **it does not certify functions or make this port playable**. See [the checkpoint handoff](docs/JP_MAIN_CHECKPOINT.md). Eight synthetic unit tests cover the tool.
+
+## Japanese overlay map checkpointing
+
+The new overlay checkpoint tool verifies binary/header identities, Japanese load bases and candidate map bounds for OVL_00/01/02. **It does not establish that `raw_code_offset = 0x80` or any function boundary is correct.** Review the overlays in Ghidra first; then follow [the overlay validation instructions](docs/JP_OVERLAY_CHECKPOINT.md). The 12 new tests use synthetic input only.
 
 ## Check your inputs before development
 

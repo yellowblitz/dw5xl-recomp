@@ -23,6 +23,10 @@ The project maintainer supplied the boot executable `SLPM_661.01`, `SYSTEM.CNF` 
 - [`docs/JP_PORT_PLAN.md`](docs/JP_PORT_PLAN.md): remaining reverse engineering and native integration milestones.
 - [`docs/index.html`](docs/index.html): static GitHub Pages landing page (requires one-time Pages setting in GitHub).
 
+## Preserve main-ELF analysis checkpoints
+
+Use [`tools/jp/checkpoint_main_map.py`](tools/jp/checkpoint_main_map.py) to hash-lock a reviewed Japanese function CSV and compare it with its raw Ghidra export. The tool generates a local manifest for the existing validator; **it does not certify functions or make this port playable**. See [the checkpoint handoff](docs/JP_MAIN_CHECKPOINT.md). Eight synthetic unit tests cover the tool.
+
 ## Check your inputs before development
 
 Python 3.11 or newer; no extra Python packages are required:

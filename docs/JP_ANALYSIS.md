@@ -1,5 +1,8 @@
 # Japanese analysis handoff
 
+**Current handoff:** [main-ELF checkpoint and reproduction instructions](JP_MAIN_CHECKPOINT.md). Earlier main-ELF analysis observations were local and are not checked-in map/validator artifacts; treat them as unverified until reproduced.
+
+
 ## Verified checkpoint — 2026-11-08
 
 The five supplied files reproduce `recomp/dw5xl_jp/known_revision.json` exactly,
@@ -21,8 +24,7 @@ Japanese build: it still targets PAL, including PAL VU/IOP inputs.
 
 Use Ghidra with an R5900 language extension, in a separate local project. The
 upstream setup documents `r5900:LE:32:default`; ordinary MIPS analysis alone
-cannot establish correct decoding of all Emotion Engine instructions. There is
-no Ghidra service or headless executable available in the current work environment.
+cannot establish correct decoding of all Emotion Engine instructions. Ghidra analysis was attempted in an earlier local session, but no reviewed JP function map or validation artifact is preserved on this branch.
 
 1. Run the input-only preflight against the source folder. Keep the exact files
    unchanged and outside Git. The supplied sample set does not include MODULES.

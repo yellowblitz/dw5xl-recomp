@@ -4,6 +4,10 @@
 
 The recorded header metadata in recomp/dw5xl_jp/known_revision.json identifies module IDs 1/2/3 and load base 0x0060C800, unlike the PAL overlay base. **The raw_code_offset = 0x80 values in JP profiles remain provisional.** Hash/header identity is not proof of an executable code boundary.
 
+## Preliminary constructor-pointer review
+
+Before creating overlay function maps, run [`inspect_constructors.py`](../tools/jp/inspect_constructors.py) against the exact Japanese sample files to examine possible header-referenced constructor pointers. The header reports a 14-word candidate range for OVL_00 and empty ranges for OVL_01 and OVL_02, assuming exclusive ends. **Neither the pointer-table format nor any address is verified as a callable function.** See [JP_CONSTRUCTOR_REVIEW.md](JP_CONSTRUCTOR_REVIEW.md) for the local command and required Ghidra cross-checks.
+
 ## 1. Independently analyze the overlays
 
 Use your own legal Japanese disc files locally, outside this repository. Run:

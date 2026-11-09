@@ -49,6 +49,10 @@ The initial `main.toml` and three overlay TOMLs are placeholders with no functio
 - Keep GPL-3.0 copyright notices, license and third-party acknowledgements intact.
 - No disc data, ISO extracts, game content or generated machine-code translations in Git.
 
+## Constructor-table candidate inspection — 2026-11-09
+
+Added `tools/jp/inspect_constructors.py` and 12 synthetic tests to identify potential constructor targets in the three known Japanese overlay samples, after exact SHA-256/header validation. The GitHub Actions test matrix passed. The overlay headers imply a candidate 14-word range for OVL_00 (if its reported end address is exclusive) and empty ranges for OVL_01/02. No actual pointer values or code semantics have been confirmed by disassembly. See [JP_CONSTRUCTOR_REVIEW.md](JP_CONSTRUCTOR_REVIEW.md). Native Japanese code generation and boot remain unverified.
+
 ## Overlay checkpoint tooling — 2026-11-09
 
 Added [checkpoint_overlay_maps.py](../tools/jp/checkpoint_overlay_maps.py) and

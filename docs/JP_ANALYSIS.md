@@ -8,9 +8,10 @@
 The five supplied files reproduce `recomp/dw5xl_jp/known_revision.json` exactly,
 including all SHA-256 hashes and parsed metadata. `tools/jp/preflight.py` now
 checks those fingerprints and reports remaining development prerequisites.
-The 15 synthetic JP tests pass locally with Python 3.12. CI is configured for
-Python 3.11 and 3.12 on Linux and Windows; that configuration is not evidence
-that those remote jobs have passed.
+The initial 15 synthetic JP tests passed locally with Python 3.12. Eight more
+checkpoint-tool tests were added on the jp-port branch, and the GitHub Actions
+Python 3.11/3.12 Linux/Windows matrix passed for commit 0740bf0 (2026-11-09).
+This is tool/metadata testing only, not native recompilation validation.
 
 The broader upstream tooling suite ran 122 tests: 34 failures, 12 errors and
 1 skip. Missing CMake and the built recompiler prevent those checks from passing

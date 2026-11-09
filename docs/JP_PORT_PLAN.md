@@ -55,4 +55,7 @@ Added an exact five-file verification command and explicit build blockers in
 `tools/jp/preflight.py`, with synthetic regression tests. The provided samples
 reproduce the committed metadata exactly. See [JP_ANALYSIS.md](JP_ANALYSIS.md)
 for the Ghidra handoff and remaining gates. Native compilation and boot remain
-unverified; no Japanese function maps have been created.
+unverified. Local main-ELF Ghidra analysis was reported in an earlier session,
+but its corrected function map and validator evidence are not stored on this
+branch. See [JP_MAIN_CHECKPOINT.md](JP_MAIN_CHECKPOINT.md) for reproducible
+hash-locked checkpoints and outstanding engineering gates.

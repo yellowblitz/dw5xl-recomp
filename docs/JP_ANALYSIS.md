@@ -61,6 +61,10 @@ On 2026-11-09, the developer supplied the actual Japanese main ELF and all three
 
 The local actual-binary JAL-word scan correlates 5,602 of 7,630 combined entry/constructor/prologue candidates with one or more syntactic direct-call targets, without claiming branch reachability or code correctness. [JP_CALL_CANDIDATE_REVIEW.md](JP_CALL_CANDIDATE_REVIEW.md) documents the 4-module breakdown, 39 ambiguous main-to-overlay guest-slot words, repeatable local command and new Ghidra bookmark-only importer. Neither scanner nor bookmark script creates functions or validates a translated Japanese build.
 
+## Stronger OVL_00 constructor boundaries
+
+On the exact uploaded JP OVL_00 binary, [inspect_constructor_bodies.py](../tools/jp/inspect_constructor_bodies.py) checked each of the 14 header-linked pointer starts through its first JR $ra and delay slot. All 14 had no recognized earlier branch/call and ended at the next candidate or with only eight bytes of zero padding. The tentative spans total 29,360 bytes, with 32 bytes of zero padding. This is **not** a R5900/Ghidra-validated function map; it is concrete bounded review evidence. The corresponding [14 exact candidate ranges](JP_CONSTRUCTOR_BODY_REVIEW.md) can now be imported as Ghidra Analysis bookmarks without creating functions.
+
 ## Gates after function analysis
 
 - Verify overlay code boundaries, constructors and module dispatch from JP code.

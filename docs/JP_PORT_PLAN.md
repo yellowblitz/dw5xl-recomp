@@ -49,6 +49,10 @@ The initial `main.toml` and three overlay TOMLs are placeholders with no functio
 - Keep GPL-3.0 copyright notices, license and third-party acknowledgements intact.
 - No disc data, ISO extracts, game content or generated machine-code translations in Git.
 
+## Tentative bounds for 14 Japanese constructor routines — 2026-11-10
+
+Added `tools/jp/inspect_constructor_bodies.py` and 11 synthetic tests. Hash-verified inspection of the uploaded `OVL_00.BIN` found 14 distinct header-pointer starts, each with a first `JR $ra` return and delay slot before the next pointer, no recognized earlier control transfer, and at most eight bytes of zero padding. Together these account for **29,360 bytes of proposed code-body spans** and 32 bytes of inter-routine padding. The Java Ghidra bookmark importer now accepts the bounded-candidate CSV; **Ghidra function classification and compilation have not been run**. See [JP_CONSTRUCTOR_BODY_REVIEW.md](JP_CONSTRUCTOR_BODY_REVIEW.md).
+
 ## Ranked Japanese entry candidates and Ghidra review — 2026-11-09
 
 Added `tools/jp/corroborate_candidates.py` and six synthetic tests to rank potential JP function entries using direct JAL-word references, while explicitly preserving ambiguity among the three overlays' overlapping guest address ranges. Real sample analysis generated **7,630** combined address candidates, **5,602** with at least one syntactic JAL-target match, and **14** OVL_00 constructor table candidates (no direct JAL matches). Implemented `tools/ghidra_scripts/BookmarkJPReviewCandidates.java` to safely mark reviewed module candidates as Ghidra Analysis bookmarks, without defining functions. Python tests passed the CI matrix; the Java script still needs a real Ghidra run. See [JP_CALL_CANDIDATE_REVIEW.md](JP_CALL_CANDIDATE_REVIEW.md). **Native recompilation and Japanese boot have not been validated.**

@@ -47,6 +47,17 @@ populates a PS2Recomp `entry_points` or `stubs` list and never invokes the
 upstream recompiler. The original word range may not even be a pointer table;
 review it in Japanese disassembly before drawing conclusions.
 
+## Follow-up: candidate return boundaries
+
+Direct inspection of the same exact JP OVL_00 sample also found **14/14**
+table-pointer targets with a syntactic `JR $ra` return and readable delay
+slot before the next table entry, with no recognized earlier branch or call.
+Their 29,360 combined tentative body bytes and 32 bytes of zero padding
+are documented at [JP_CONSTRUCTOR_BODY_REVIEW.md](JP_CONSTRUCTOR_BODY_REVIEW.md).
+This supports distinct initialization-routine boundaries more strongly
+than the earlier first-word-only scan. It does not establish the true
+Ghidra function body or make the Japanese port runnable.
+
 ## Verify candidates in Ghidra
 
 1. Import each overlay separately as R5900 little-endian data at guest

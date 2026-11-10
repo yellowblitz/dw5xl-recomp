@@ -79,6 +79,12 @@ candidate script can check the selected module against the open program.
    `ExportPS2Functions.java` and run the [main](JP_MAIN_CHECKPOINT.md)
    or [overlay](JP_OVERLAY_CHECKPOINT.md) validator checkpoint.
 
+The bookmark script also accepts the new `constructor_span_candidates.csv`
+from [inspect_constructor_bodies.py](../tools/jp/inspect_constructor_bodies.py),
+with proposed return/end addresses in the Analysis bookmark description.
+No function boundaries are created, and the Java importer still needs an
+actual Ghidra run to establish runtime compatibility.
+
 The bookmark script also accepts the earlier
 `prologue_review_seeds.csv` and `candidate_bookmarks.csv` formats.
 It validates module names, 32-bit addresses, file size and CSV schema

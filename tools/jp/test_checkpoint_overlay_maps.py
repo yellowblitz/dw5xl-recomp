@@ -163,7 +163,7 @@ class OverlayCheckpointTests(unittest.TestCase):
             root = Path(d)
             game, maps, raw, profiles, revision = fixture(root)
             (game / 'OVL_01.BIN').unlink()
-            with self.assertRaisesRegex(ValueError, 'symlink'):
+            with self.assertRaisesRegex(ValueError, 'Missing known game file'):
                 checkpoint(game, maps, root / 'checkpoint', raw, revision, profiles)
 
     def test_lowercase_extracted_files_accepted(self):

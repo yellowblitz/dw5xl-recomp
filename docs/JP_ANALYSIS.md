@@ -57,6 +57,10 @@ cannot establish correct decoding of all Emotion Engine instructions. Ghidra ana
 
 On 2026-11-09, the developer supplied the actual Japanese main ELF and all three known overlays again. Their SHA-256 digests matched the committed reference. All three overlays have a zero-filled prefix up to 0x80 and an ADDIU stack-frame allocation at that offset; OVL_00 contains 14 aligned in-file constructor-table pointer candidates, with a LUI-class instruction at each target. A bounded linear scan also found possible JAL targets into both the main ELF and each overlay. This evidence supports the candidate entry offsets but **does not establish complete code boundaries, reachability or a native build**. The read-only [runtime entry survey](../tools/jp/survey_runtime_entries.py) recreates local JSON and candidate-bookmark CSV evidence; see [the actual-binary report](JP_REAL_BINARY_ANALYSIS.md).
 
+## Ranked function review and Ghidra bookmarks
+
+The local actual-binary JAL-word scan correlates 5,602 of 7,630 combined entry/constructor/prologue candidates with one or more syntactic direct-call targets, without claiming branch reachability or code correctness. [JP_CALL_CANDIDATE_REVIEW.md](JP_CALL_CANDIDATE_REVIEW.md) documents the 4-module breakdown, 39 ambiguous main-to-overlay guest-slot words, repeatable local command and new Ghidra bookmark-only importer. Neither scanner nor bookmark script creates functions or validates a translated Japanese build.
+
 ## Gates after function analysis
 
 - Verify overlay code boundaries, constructors and module dispatch from JP code.

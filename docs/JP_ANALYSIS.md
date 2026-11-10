@@ -1,6 +1,6 @@
 # Japanese analysis handoff
 
-**Current handoffs:** [main-ELF checkpoint](JP_MAIN_CHECKPOINT.md) and [three-overlay checkpoint](JP_OVERLAY_CHECKPOINT.md). Earlier main-ELF analysis observations were local and are not checked-in map/validator artifacts; treat them as unverified until reproduced.
+**Current handoffs:** [actual Japanese binary structural review](JP_REAL_BINARY_ANALYSIS.md), [main-ELF checkpoint](JP_MAIN_CHECKPOINT.md) and [three-overlay checkpoint](JP_OVERLAY_CHECKPOINT.md). Earlier main-ELF analysis observations were local and are not checked-in map/validator artifacts; treat them as unverified until reproduced.
 
 
 ## Verified checkpoint — 2026-11-08
@@ -52,6 +52,10 @@ cannot establish correct decoding of all Emotion Engine instructions. Ghidra ana
    Follow `tools/debug/validate_function_map.md` for selected passes and generated
    output auditing. A present CSV is not proof of correct boundaries. The
    preflight deliberately continues to report validation work when maps exist.
+
+## Reproducible observations from the re-supplied binaries
+
+On 2026-11-09, the developer supplied the actual Japanese main ELF and all three known overlays again. Their SHA-256 digests matched the committed reference. All three overlays have a zero-filled prefix up to 0x80 and an ADDIU stack-frame allocation at that offset; OVL_00 contains 14 aligned in-file constructor-table pointer candidates, with a LUI-class instruction at each target. A bounded linear scan also found possible JAL targets into both the main ELF and each overlay. This evidence supports the candidate entry offsets but **does not establish complete code boundaries, reachability or a native build**. The read-only [runtime entry survey](../tools/jp/survey_runtime_entries.py) recreates local JSON and candidate-bookmark CSV evidence; see [the actual-binary report](JP_REAL_BINARY_ANALYSIS.md).
 
 ## Gates after function analysis
 

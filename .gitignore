@@ -37,3 +37,12 @@ __pycache__/
 # Local setup ownership and validated generation records
 /setup.lock
 /cache/generation/
+
+# Japanese-only local binary extracts and function-map scratch artifacts.
+# Public fork: never accidentally commit copyrighted source binaries.
+/SLPM_661.01
+/[Oo][Vv][Ll]_0[012].[Bb][Ii][Nn]
+/*.iso
+/*.chd
+/jp-analysis/
+/recomp/dw5xl_jp/**/ghidra_functions*.csv

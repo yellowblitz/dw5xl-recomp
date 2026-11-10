@@ -134,7 +134,7 @@ class ConstructorInspectionTests(unittest.TestCase):
         with tempfile.TemporaryDirectory() as tmp:
             game, revision, _ = fixture(Path(tmp))
             (game / 'OVL_01.BIN').unlink()
-            with self.assertRaisesRegex(ValueError, 'non-symlink'):
+            with self.assertRaisesRegex(ValueError, 'Missing known game file'):
                 inspect_directory(game, revision)
 
     def test_output_must_not_overwrite(self):
@@ -158,6 +158,15 @@ class ConstructorInspectionTests(unittest.TestCase):
             self.assertEqual(obj['overlays'][0]['file'], 'OVL_00.BIN')
             self.assertEqual(obj['overlays'][0]['table_word_count'], 4)
             self.assertNotIn('payload', output.read_text())
+
+    def test_lowercase_extracted_files_accepted(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            game, revision, _ = fixture(Path(tmp))
+            for i in range(3):
+                original = game / f'OVL_0{i}.BIN'
+                original.rename(game / original.name.lower())
+            result = inspect_directory(game, revision)
+            self.assertEqual(result['overlays'][0]['table_word_count'], 4)
 
     def test_missing_game_directory_rejected(self):
         with tempfile.TemporaryDirectory() as tmp:

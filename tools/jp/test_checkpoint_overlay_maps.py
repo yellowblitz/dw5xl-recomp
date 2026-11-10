@@ -166,6 +166,16 @@ class OverlayCheckpointTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, 'symlink'):
                 checkpoint(game, maps, root / 'checkpoint', raw, revision, profiles)
 
+    def test_lowercase_extracted_files_accepted(self):
+        with tempfile.TemporaryDirectory() as d:
+            root = Path(d)
+            game, maps, raw, profiles, revision = fixture(root)
+            for i in range(3):
+                source = game / f'OVL_0{i}.BIN'
+                source.rename(game / source.name.lower())
+            result = checkpoint(game, maps, root / 'checkpoint', raw, revision, profiles)
+            self.assertEqual(result['overlay_files_verified'], 3)
+
     def test_offset_below_header_rejected(self):
         with tempfile.TemporaryDirectory() as d:
             root = Path(d)

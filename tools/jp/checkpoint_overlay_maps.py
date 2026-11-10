@@ -15,6 +15,7 @@ import tomllib
 
 from checkpoint_main_map import csv_rows, regular_file, snapshot, stats
 from inspect_samples import inspect_overlay
+from find_game_files import known_file
 
 ROOT = Path(__file__).resolve().parents[2]
 REVISION = ROOT / 'recomp/dw5xl_jp/known_revision.json'
@@ -49,7 +50,7 @@ def inspect_profiles(game_dir: Path, maps_dir: Path, raw_maps_dir: Path | None,
         if number not in ('00', '01', '02') or number in ids:
             raise ValueError('Unexpected or duplicate Japanese overlay ID')
         ids.add(number)
-        binary = regular_file(game_dir / expected['file'])
+        binary = regular_file(known_file(game_dir, expected['file']))
         actual = inspect_overlay(binary)
         if any(actual.get(field) != expected.get(field) for field in IDENTITY_FIELDS):
             raise ValueError(f'{expected["file"]}: header, size or SHA-256 mismatch')

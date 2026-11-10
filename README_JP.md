@@ -1,6 +1,6 @@
 # DW5XL Recomp — Japanese Version (SLPM_661.01)
 
-**Status: verified binary fingerprints and development scaffolding only; NOT a playable Japanese port.**
+**Status: verified Japanese binary fingerprints and initial structural entry analysis; NOT a playable Japanese port.**
 
 This development branch adapts [TheSlackbringer/dw5xl-recomp](https://github.com/TheSlackbringer/dw5xl-recomp), a GPL-3.0 native PS2 recompilation project, for **Shin Sangoku Musou 4 Moushouden** (真・三國無双4 猛将伝). The existing PAL port is preserved on the original `main` branch.
 
@@ -22,6 +22,7 @@ The project maintainer supplied the boot executable `SLPM_661.01`, `SYSTEM.CNF` 
 - [`recomp/dw5xl_jp/overlays/`](recomp/dw5xl_jp/overlays): three candidate JP overlay configurations. The `raw_code_offset = 0x80` is **not yet verified for JP**.
 - [`tools/jp/checkpoint_overlay_maps.py`](tools/jp/checkpoint_overlay_maps.py): check the three JP overlay samples and hash-lock independently reviewed function CSVs for validation. See [overlay handoff](docs/JP_OVERLAY_CHECKPOINT.md).
 - [`tools/jp/inspect_constructors.py`](tools/jp/inspect_constructors.py): read-only, SHA-256-locked constructor-pointer candidate inspection (not function verification); see [constructor review](docs/JP_CONSTRUCTOR_REVIEW.md).
+- [`tools/jp/survey_runtime_entries.py`](tools/jp/survey_runtime_entries.py): survey the exact Japanese executable and overlays for plausible entry points, header pointer candidates and early direct `JAL` targets; produce metadata and Ghidra review bookmarks locally. See [the direct binary evidence](docs/JP_REAL_BINARY_ANALYSIS.md).
 - [`docs/JP_PORT_PLAN.md`](docs/JP_PORT_PLAN.md): remaining reverse engineering and native integration milestones.
 - [`docs/index.html`](docs/index.html): static GitHub Pages landing page (requires one-time Pages setting in GitHub).
 

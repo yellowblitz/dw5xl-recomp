@@ -18,6 +18,7 @@ import struct
 
 from checkpoint_main_map import regular_file
 from inspect_samples import inspect_overlay
+from find_game_files import known_file
 
 ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_REVISION = ROOT / 'recomp/dw5xl_jp/known_revision.json'
@@ -104,7 +105,7 @@ def inspect_directory(game_dir: Path, revision: Path = DEFAULT_REVISION) -> dict
         names.append(item['file'])
     if len(set(names)) != 3:
         raise ValueError('Missing or duplicated Japanese overlay name')
-    analyses = [inspect_table(game_dir / item['file'], item) for item in sorted(records, key=lambda x: x['file'])]
+    analyses = [inspect_table(known_file(game_dir, item['file']), item) for item in sorted(records, key=lambda x: x['file'])]
     return {
         'schema_version': 1,
         'scope': 'three exact Japanese overlay samples only',

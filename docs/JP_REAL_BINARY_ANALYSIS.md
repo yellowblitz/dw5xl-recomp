@@ -55,6 +55,20 @@ against the committed revision before a report is written. Reports contain
 hashes, addresses, opcode classes and classifications, **not executable
 instruction bytes**. Output must be a new folder outside Git.
 
+## Previous main-ELF translation obstruction: targeted review
+
+The previously reported Ghidra/translator problem near guest
+`0x00315E70` can now be inspected directly in the same uploaded
+`SLPM_661.01` ELF (file offset `0x00216670`, based on the first file-backed
+segment). The surrounding bytes include sequences resembling tables of small
+integers, masks and floating-point constants, rather than a clear function
+entry. This is consistent with an **instruction/data classification error**,
+but is not a complete reference- or reachability-backed classification.
+In Ghidra, inspect this region's references and data layout before removing
+or inventing any function entry; do not simply force the entire adjacent
+interval to data. The current public branch does not contain the historical
+corrected Ghidra map or translated output.
+
 ## Tentative function-entry seed census
 
 An additional conservative MIPS stack-frame/return-address-save scan of these exact four binaries yielded 5,259 main ELF and 2,356 overlay candidate starts, **7,615 unverified candidate entries total**. They are *not* a function list; shared tails, leaf functions, data misclassification and dynamic code require Ghidra. See [JP_FUNCTION_SEED_REVIEW.md](JP_FUNCTION_SEED_REVIEW.md) for the locally reproducible scanner, safety limits and exact breakdown.

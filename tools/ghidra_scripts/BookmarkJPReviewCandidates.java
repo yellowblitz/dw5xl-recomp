@@ -1,6 +1,7 @@
 // Import candidate review CSVs as Ghidra ANALYSIS BOOKMARKS ONLY.
 // Supports tools/jp/survey_prologues.py, survey_runtime_entries.py and
-// corroborate_candidates.py CSV output. Never creates functions, names,
+// corroborate_candidates.py and inspect_constructor_bodies.py CSV output.
+// Never creates functions, names,
 // disassembly, ranges or relocations from unverified candidate addresses.
 //@category DW5XL
 
@@ -128,11 +129,15 @@ public class BookmarkJPReviewCandidates extends GhidraScript {
                 }
             }
             if (!columns.containsKey("module") ||
-                !(columns.containsKey("guest_address") || columns.containsKey("address"))) {
-                throw new Exception("Expected module and guest_address/address columns");
+                !(columns.containsKey("guest_address") ||
+                  columns.containsKey("address") ||
+                  columns.containsKey("candidate_start"))) {
+                throw new Exception("Expected module and guest_address/address/candidate_start columns");
             }
+            boolean constructorSpan = columns.containsKey("candidate_end_exclusive");
             boolean ranked = columns.containsKey("direct_jal_word_hits");
-            category = ranked ? "JP candidate: static JAL correlation" :
+            category = constructorSpan ? "JP candidate: return-boundary review" :
+                       ranked ? "JP candidate: static JAL correlation" :
                        columns.containsKey("kind") ? "JP candidate: header/bookmark" :
                        "JP candidate: stack prologue";
             String line;
@@ -157,8 +162,8 @@ public class BookmarkJPReviewCandidates extends GhidraScript {
                     continue;
                 }
                 String literal = get(columns, row,
-                                     columns.containsKey("guest_address") ?
-                                     "guest_address" : "address");
+                                     columns.containsKey("guest_address") ? "guest_address" :
+                                     columns.containsKey("address") ? "address" : "candidate_start");
                 if (!HEX32.matcher(literal).matches()) {
                     throw new Exception("Invalid 32-bit guest address at line " + lineNumber);
                 }
@@ -169,7 +174,16 @@ public class BookmarkJPReviewCandidates extends GhidraScript {
                 String status = get(columns, row,
                                     columns.containsKey("review_status") ?
                                     "review_status" : "status");
-                if (!status.isEmpty() && !status.equals("CANDIDATE_NOT_VERIFIED")) {
+                if (constructorSpan) {
+                    if (!(status.equals("LINEAR_RETURN_CANDIDATE_NOT_VERIFIED") ||
+                          status.equals("CONTROL_TRANSFER_BEFORE_RETURN_REVIEW") ||
+                          status.equals("NO_RETURN_IN_BOUNDED_WINDOW") ||
+                          status.equals("NO_DELAY_SLOT_IN_BOUNDED_WINDOW") ||
+                          status.equals("NONZERO_OR_EXCESSIVE_PADDING_REVIEW") ||
+                          status.equals("OUT_OF_RANGE_REVIEW"))) {
+                        throw new Exception("Unexpected constructor review status at line " + lineNumber);
+                    }
+                } else if (!status.isEmpty() && !status.equals("CANDIDATE_NOT_VERIFIED")) {
                     throw new Exception("Unexpected candidate status at line " + lineNumber);
                 }
                 Address address = toAddr(literal);
@@ -185,6 +199,32 @@ public class BookmarkJPReviewCandidates extends GhidraScript {
                                  "evidence=" + evidence +
                                  (hits.isEmpty() ? "" : "; syntactic JAL words=" + hits) +
                                  ". Do not automatically create a function.";
+                if (constructorSpan) {
+                    String endLiteral = get(columns, row, "candidate_end_exclusive");
+                    String returnLiteral = get(columns, row, "return_instruction");
+                    if (!endLiteral.isEmpty() || !returnLiteral.isEmpty()) {
+                        if (!HEX32.matcher(endLiteral).matches() ||
+                            !HEX32.matcher(returnLiteral).matches()) {
+                            throw new Exception("Invalid candidate end/return address at line " + lineNumber);
+                        }
+                        long candidateEnd = Long.parseUnsignedLong(endLiteral.substring(2), 16);
+                        long returnPc = Long.parseUnsignedLong(returnLiteral.substring(2), 16);
+                        if (candidateEnd <= number || candidateEnd != returnPc + 8 ||
+                            (returnPc & 3) != 0) {
+                            throw new Exception("Inconsistent constructor return bounds at line " + lineNumber);
+                        }
+                        if (status.equals("NO_RETURN_IN_BOUNDED_WINDOW") ||
+                            status.equals("NO_DELAY_SLOT_IN_BOUNDED_WINDOW")) {
+                            throw new Exception("Unexpected bounds on missing-return row " + lineNumber);
+                        }
+                    } else if (status.equals("LINEAR_RETURN_CANDIDATE_NOT_VERIFIED")) {
+                        throw new Exception("Missing return bounds for linear candidate at line " + lineNumber);
+                    }
+                    comment = "UNVERIFIED JP CONSTRUCTOR SPAN; status=" + status +
+                              "; end-exclusive=" + (endLiteral.isEmpty() ? "unknown" : endLiteral) +
+                              "; JR-RA=" + (returnLiteral.isEmpty() ? "unknown" : returnLiteral) +
+                              ". Review R5900 code/data boundaries; do not auto-create a function.";
+                }
                 entries.add(new Entry(address, comment));
                 ++accepted;
             }

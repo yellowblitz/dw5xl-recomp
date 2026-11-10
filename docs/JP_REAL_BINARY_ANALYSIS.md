@@ -55,6 +55,10 @@ against the committed revision before a report is written. Reports contain
 hashes, addresses, opcode classes and classifications, **not executable
 instruction bytes**. Output must be a new folder outside Git.
 
+## Tentative function-entry seed census
+
+An additional conservative MIPS stack-frame/return-address-save scan of these exact four binaries yielded 5,259 main ELF and 2,356 overlay candidate starts, **7,615 unverified candidate entries total**. They are *not* a function list; shared tails, leaf functions, data misclassification and dynamic code require Ghidra. See [JP_FUNCTION_SEED_REVIEW.md](JP_FUNCTION_SEED_REVIEW.md) for the locally reproducible scanner, safety limits and exact breakdown.
+
 ## Engineering conclusions and next gate
 
 The original candidate offset `0x80` is now supported by direct observations

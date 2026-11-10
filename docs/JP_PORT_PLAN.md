@@ -49,6 +49,10 @@ The initial `main.toml` and three overlay TOMLs are placeholders with no functio
 - Keep GPL-3.0 copyright notices, license and third-party acknowledgements intact.
 - No disc data, ISO extracts, game content or generated machine-code translations in Git.
 
+## Re-supplied Japanese binary structural survey — 2026-11-09
+
+The Japanese ELF and three overlays were read and SHA-256-verified against the existing five-file baseline. All three overlay prefixes have direct MIPS stack-frame allocation evidence at offset 0x80. All 14 aligned OVL_00 header-pointer targets begin with a syntactically recognized LUI opcode; preliminary direct JAL targets in opening code windows span the main ELF and overlays. Added `tools/jp/survey_runtime_entries.py`, synthetic tests and a local-only bookmark export format. [Findings and instructions](JP_REAL_BINARY_ANALYSIS.md). **No function map is yet verified and native JP boot remains untested.**
+
 ## Constructor-table candidate inspection — 2026-11-09
 
 Added `tools/jp/inspect_constructors.py` and 12 synthetic tests to identify potential constructor targets in the three known Japanese overlay samples, after exact SHA-256/header validation. The GitHub Actions test matrix passed. The overlay headers imply a candidate 14-word range for OVL_00 (if its reported end address is exclusive) and empty ranges for OVL_01/02. No actual pointer values or code semantics have been confirmed by disassembly. See [JP_CONSTRUCTOR_REVIEW.md](JP_CONSTRUCTOR_REVIEW.md). Native Japanese code generation and boot remain unverified.

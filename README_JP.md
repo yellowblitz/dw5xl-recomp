@@ -24,6 +24,8 @@ The project maintainer supplied the boot executable `SLPM_661.01`, `SYSTEM.CNF` 
 - [`tools/jp/inspect_constructors.py`](tools/jp/inspect_constructors.py): read-only, SHA-256-locked constructor-pointer candidate inspection (not function verification); see [constructor review](docs/JP_CONSTRUCTOR_REVIEW.md).
 - [`tools/jp/survey_runtime_entries.py`](tools/jp/survey_runtime_entries.py): survey the exact Japanese executable and overlays for plausible entry points, header pointer candidates and early direct `JAL` targets; produce metadata and Ghidra review bookmarks locally. See [the direct binary evidence](docs/JP_REAL_BINARY_ANALYSIS.md).
 - [`tools/jp/survey_prologues.py`](tools/jp/survey_prologues.py): SHA-locked, local-only scanner for Japanese MIPS function-entry candidates; 7,615 strong pattern candidates observed in the four supplied files. See [Ghidra review guidance](docs/JP_FUNCTION_SEED_REVIEW.md).
+- [`tools/jp/corroborate_candidates.py`](tools/jp/corroborate_candidates.py): rank 7,630 combined Japanese review candidates by syntactic JAL-target references (5,602 with one or more matches), without assigning ambiguous overlay slots; see [call-candidate review](docs/JP_CALL_CANDIDATE_REVIEW.md).
+- [`tools/ghidra_scripts/BookmarkJPReviewCandidates.java`](tools/ghidra_scripts/BookmarkJPReviewCandidates.java): import ranked/prologue/constructor CSVs as **Ghidra bookmarks only**, without automatically making functions or disassembling code.
 - [`docs/JP_PORT_PLAN.md`](docs/JP_PORT_PLAN.md): remaining reverse engineering and native integration milestones.
 - [`docs/index.html`](docs/index.html): static GitHub Pages landing page (requires one-time Pages setting in GitHub).
 

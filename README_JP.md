@@ -23,6 +23,7 @@ The project maintainer supplied the boot executable `SLPM_661.01`, `SYSTEM.CNF` 
 - [`tools/jp/checkpoint_overlay_maps.py`](tools/jp/checkpoint_overlay_maps.py): check the three JP overlay samples and hash-lock independently reviewed function CSVs for validation. See [overlay handoff](docs/JP_OVERLAY_CHECKPOINT.md).
 - [`tools/jp/inspect_constructors.py`](tools/jp/inspect_constructors.py): read-only, SHA-256-locked constructor-pointer candidate inspection (not function verification); see [constructor review](docs/JP_CONSTRUCTOR_REVIEW.md).
 - [`tools/jp/survey_runtime_entries.py`](tools/jp/survey_runtime_entries.py): survey the exact Japanese executable and overlays for plausible entry points, header pointer candidates and early direct `JAL` targets; produce metadata and Ghidra review bookmarks locally. See [the direct binary evidence](docs/JP_REAL_BINARY_ANALYSIS.md).
+- [`tools/jp/survey_prologues.py`](tools/jp/survey_prologues.py): SHA-locked, local-only scanner for Japanese MIPS function-entry candidates; 7,615 strong pattern candidates observed in the four supplied files. See [Ghidra review guidance](docs/JP_FUNCTION_SEED_REVIEW.md).
 - [`docs/JP_PORT_PLAN.md`](docs/JP_PORT_PLAN.md): remaining reverse engineering and native integration milestones.
 - [`docs/index.html`](docs/index.html): static GitHub Pages landing page (requires one-time Pages setting in GitHub).
 

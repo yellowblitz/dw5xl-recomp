@@ -72,13 +72,15 @@ def corroborate(game_dir: Path, revision: Path = REVISION) -> tuple[dict, list[d
     main_hits_from_overlays: Counter = Counter()
     ambiguous_main_to_overlay = 0
     overlay_ranges = []
+    revision_data = json.loads(regular_file(revision, 1024 * 1024).read_text(encoding='utf-8'))
+    size_by_name = {item['file']: item['size'] for item in revision_data['overlays']}
+    base_by_module = {}
     for module in evidence['modules']:
         base = int(module['load_base'], 16)
-        size = next(x['file_size'] for x in (
-            {'file_size': item['size']} for item in json.loads(
-                regular_file(revision, 1024 * 1024).read_text(encoding='utf-8'))['overlays']
-            if item['file'] == module['file']))
+        size = size_by_name[module['file']]
         overlay_ranges.append((base, base + size))
+        name = module['file'].split('.')[0].lower().replace('_', '')
+        base_by_module[name] = base
 
     for source_module in ('main', 'ovl00', 'ovl01', 'ovl02'):
         if source_module == 'main':
@@ -88,7 +90,7 @@ def corroborate(game_dir: Path, revision: Path = REVISION) -> tuple[dict, list[d
             path = regular_file(known_file(game_dir,
                                 f"OVL_{source_module[-2:]}.BIN"), MAX_FILE_BYTES)
             data = path.read_bytes()
-            areas = [(0x80, len(data), 0x0060C800)]
+            areas = [(0x80, len(data), base_by_module[source_module])]
         n = 0
         for first, last, bias in areas:
             for pc, target in jal_words(data, first, last, bias):
